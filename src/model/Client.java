@@ -1,11 +1,14 @@
 package model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 import exc.BookNotFoundException;
 
-public class Client {
+public class Client implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private String firstName;
 	private String lastName;
 	private final long ID;

@@ -1,9 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Book {
+public class Book implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private String author;
 	private String title;
 	private boolean isRented;
