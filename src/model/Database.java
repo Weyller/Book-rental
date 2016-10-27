@@ -15,12 +15,12 @@ import java.util.List;
 public class Database {
 	private List<Client>clients;
 	private List<Book>books;
-	private List<Rental>rentals;
+	private List<Rental>rentalsHistory;
 	
 	public Database(){
 		clients = new LinkedList<>();
 		books = new LinkedList<>();
-		rentals = new LinkedList<>();
+		rentalsHistory = new LinkedList<>();
 	}
 	
 	public void loadFromFile(File file){
@@ -37,8 +37,14 @@ public class Database {
 			books.addAll(Arrays.asList(booksArray));
 			
 			Rental[] rentalsArray = (Rental[])ois.readObject();
-			rentals.clear();
-			rentals.addAll(Arrays.asList(rentalsArray));
+			rentalsHistory.clear();
+			rentalsHistory.addAll(Arrays.asList(rentalsArray));
+			
+			long cIDbackup = ois.readLong();
+			Client.setClientsID(cIDbackup);
+			
+			long bIDbackup = ois.readLong();
+			Book.setBooksID(bIDbackup);
 			
 			ois.close();
 		}
@@ -63,8 +69,14 @@ public class Database {
 			Book[] booksArray = books.toArray(new Book[books.size()]);
 			oos.writeObject(booksArray);
 			
-			Rental[] rentalsArray = rentals.toArray(new Rental[rentals.size()]);
+			Rental[] rentalsArray = rentalsHistory.toArray(new Rental[rentalsHistory.size()]);
 			oos.writeObject(rentalsArray);
+			
+			long cID = Client.getClientsID();
+			oos.writeLong(cID);
+			
+			long bID = Book.getBooksID();
+			oos.writeLong(bID);
 			
 			oos.close();
 		}
@@ -86,16 +98,8 @@ public class Database {
 		clients.remove(index);
 	}
 	
-	public void removeClient(Client c){
-		clients.remove(c);
-	}
-	
 	public void addBook(Book b){
 		books.add(b);
-	}
-	
-	public void removeBook(Book b){
-		books.remove(b);
 	}
 	
 	public void removeBook(int index){
@@ -103,7 +107,7 @@ public class Database {
 	}
 	
 	public void addRental(Rental r){
-		rentals.add(r);
+		rentalsHistory.add(r);
 	}
 	
 	public List<Client> getClients(){
@@ -115,6 +119,6 @@ public class Database {
 	}
 	
 	public List<Rental> getRentals(){
-		return Collections.unmodifiableList(rentals);
+		return Collections.unmodifiableList(rentalsHistory);
 	}
 }

@@ -12,11 +12,12 @@ public class Book implements Serializable{
 	private boolean isRented;
 	private final long ID;
 	private Date returnDate;
+	private static long booksID = 0;
 	
-	public Book(String author, String title, long ID){
+	public Book(String author, String title){
 		this.author = author;
 		this.title = title;
-		this.ID = ID;
+		this.ID = booksID++;
 	}
 	
 	public String toString(){
@@ -42,6 +43,14 @@ public class Book implements Serializable{
 	
 	public boolean getIsRented(){
 		return this.isRented;
+	}
+	
+	public static long getBooksID(){
+		return Book.booksID;
+	}
+	
+	public static void setBooksID(long bookIdBackup){
+		Book.booksID = bookIdBackup;
 	}
 	
 	private void rentFor(int days){

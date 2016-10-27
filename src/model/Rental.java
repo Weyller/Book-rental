@@ -33,7 +33,7 @@ public class Rental implements Serializable{
 		return b.getID();
 	}
 	
-	public String rentalDate(){
+	public String getRentalDate(){
 		SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
 		return f.format(rentalDate).toString();
 	}

@@ -14,12 +14,13 @@ public class Client implements Serializable{
 	private final long ID;
 	private List<Book>rentedBooks;
 	private int nrOfRentedBooks;
+	private static long clientsID = 0;
 	
-	public Client(String firstName, String lastName, long ID){
+	public Client(String firstName, String lastName){
 		rentedBooks = new LinkedList<Book>();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.ID = ID;
+		this.ID = clientsID++;
 		this.nrOfRentedBooks = 0;
 	}
 	
@@ -41,6 +42,14 @@ public class Client implements Serializable{
 
 	public int getNrOfRentedBooks() {
 		return nrOfRentedBooks;
+	}
+	
+	public static long getClientsID(){
+		return clientsID;
+	}
+	
+	public static void setClientsID(long backupID){
+		Client.clientsID = backupID;
 	}
 	
 	public void rentBook(Book b, int days){
