@@ -19,10 +19,13 @@ import viewListeners.BookTableListener;
 import viewListeners.ClientFormListener;
 import viewListeners.ClientRentalsTableListener;
 import viewListeners.ClientTableListener;
+import viewListeners.MainBarListener;
 
 public class MainFrame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
+	
+	private MainMenuBar mainBar;
 	
 	private JTabbedPane formsTabbed;
 	private JTabbedPane tablesTabbed;
@@ -38,6 +41,29 @@ public class MainFrame extends JFrame{
 	public MainFrame(String title){
 		super(title);
 		controller = new Controller();
+		
+		mainBar = new MainMenuBar();
+		mainBar.setMainBarListener(new MainBarListener(){
+			public void exit() {
+				int userChoice = JOptionPane.showConfirmDialog(null, "Really wanna leave?", "Exit", JOptionPane.YES_NO_OPTION);
+				if(userChoice == 0){
+					System.exit(0);
+				}
+				else{
+					return;
+				}
+			}
+			public void loadFromFile() {
+				
+			}
+			public void saveToFile() {
+		
+			}
+			public void about() {
+				JOptionPane.showMessageDialog(null, controller.getAboutMessage(), "about", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		setJMenuBar(mainBar);
 		
 		formsTabbed = new JTabbedPane();
 		formsTabbed.setBorder(BorderFactory.createTitledBorder("Add"));

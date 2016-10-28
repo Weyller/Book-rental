@@ -99,4 +99,11 @@ public class Controller {
 	public void setCurrentClient(Client c){
 		this.currentClient = c;
 	}
+	
+	public String getAboutMessage(){
+		return "Book rental application\n"
+				+ "Options: \nrenting, returning, rental history tracking.\n" +
+				"adding new clients and books, save/load from file.\n" +
+				"\n\n made by Karol Bochynski in 2016, enjoy";
+	}
 }
