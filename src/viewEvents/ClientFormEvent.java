@@ -1,4 +1,4 @@
-package view;
+package viewEvents;
 
 import java.util.EventObject;
 

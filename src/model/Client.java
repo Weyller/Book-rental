@@ -52,10 +52,10 @@ public class Client implements Serializable{
 		Client.clientsID = backupID;
 	}
 	
-	public void rentBook(Book b, int days){
+	public void rentBook(Book b){
 		rentedBooks.add(b);
 		this.nrOfRentedBooks++;
-		b.rentBook(days);
+		b.rentBook();
 	}
 	
 	public void returnBook(Book b) throws BookNotFoundException{

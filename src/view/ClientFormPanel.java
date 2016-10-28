@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import viewEvents.ClientFormEvent;
 import viewListeners.ClientFormListener;
 
 public class ClientFormPanel extends JPanel {

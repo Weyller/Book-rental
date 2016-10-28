@@ -25,6 +25,10 @@ public class Rental implements Serializable{
 		return c.getID();
 	}
 	
+	public String getBookTitle(){
+		return b.getTitle();
+	}
+	
 	public String getBookTitleAndAuthor(){
 		return b.getTitle() + " " + b.getAuthor();
 	}

@@ -1,4 +1,4 @@
-package view;
+package viewTableModels;
 
 import java.util.List;
 
@@ -33,13 +33,13 @@ public class ClientTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Client c = clientList.get(rowIndex);
 		switch(columnIndex){
-			case 1:
+			case 0:
 				return c.getID();
-			case 2:
+			case 1:
 				return c.getFirstName();
-			case 3:
+			case 2:
 				return c.getLastName();
-			case 4:
+			case 3:
 				return c.getNrOfRentedBooks();
 		}
 		return null;

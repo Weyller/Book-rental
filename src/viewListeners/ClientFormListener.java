@@ -2,7 +2,7 @@ package viewListeners;
 
 import java.util.EventListener;
 
-import view.ClientFormEvent;
+import viewEvents.ClientFormEvent;
 
 public interface ClientFormListener extends EventListener {
 	void formClientEventOccured(ClientFormEvent e);

@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import viewEvents.BookFormEvent;
 import viewListeners.BookFormListener;
 
 public class BookFormPanel extends JPanel {

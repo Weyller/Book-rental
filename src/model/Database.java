@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import exc.UnclearedException;
+
 public class Database {
 	private List<Client>clients;
 	private List<Book>books;
@@ -94,7 +96,11 @@ public class Database {
 		clients.add(c);
 	}
 	
-	public void removeClient(int index){
+	public void removeClient(int index) throws UnclearedException{
+		Client c = clients.get(index);
+		if(c.getNrOfRentedBooks() > 0){
+			throw new UnclearedException("Client still has some books rented! Can not delete.");
+		}
 		clients.remove(index);
 	}
 	
@@ -102,7 +108,11 @@ public class Database {
 		books.add(b);
 	}
 	
-	public void removeBook(int index){
+	public void removeBook(int index) throws UnclearedException{
+		Book b = books.get(index);
+		if(b.getIsRented() == true){
+			throw new UnclearedException("Book is rented, client must return it! Can not delete.");
+		}
 		books.remove(index);
 	}
 	

@@ -1,17 +1,22 @@
 package controller;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
+import exc.UnclearedException;
 import model.Book;
 import model.Client;
 import model.Database;
 import model.Rental;
-import view.BookFormEvent;
-import view.ClientFormEvent;
+import viewEvents.BookFormEvent;
+import viewEvents.ClientFormEvent;
 
 public class Controller {
 	private Database db = new Database();
+	
+	private Book currentBook;
+	private Client currentClient;
 	
 	public Controller(){
 		
@@ -37,6 +42,19 @@ public class Controller {
 		db.saveToFile(f);
 	}
 	
+	public void proceedCurrent(){
+		if(currentClient != null && currentBook != null){
+			Rental r = new Rental(currentClient, currentBook, new Date());
+			db.addRental(r);
+			currentClient.rentBook(currentBook);
+		}
+	}
+	
+	public void clearCurrent(){
+		currentClient = null;
+		currentBook = null;
+	}
+	
 	public void addClient(ClientFormEvent e){
 		String firstName = e.getFirstName();
 		String lastName = e.getLastName();
@@ -44,7 +62,7 @@ public class Controller {
 		db.addClient(c);
 	}
 	
-	public void removeClient(int index){
+	public void removeClient(int index) throws UnclearedException{
 		db.removeClient(index);
 	}
 	
@@ -55,7 +73,23 @@ public class Controller {
 		db.addBook(b);
 	}
 	
-	public void removeBook(int index){
+	public void removeBook(int index) throws UnclearedException{
 		db.removeBook(index);
+	}
+	
+	public Book getCurrentBook(){
+		return currentBook;
+	}
+	
+	public Client getCurrentClient(){
+		return currentClient;
+	}
+	
+	public void setCurrentBook(Book b){
+		this.currentBook = b;
+	}
+	
+	public void setCurrentClient(Client c){
+		this.currentClient = c;
 	}
 }

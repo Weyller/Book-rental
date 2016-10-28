@@ -1,13 +1,11 @@
-package view;
+package utils;
 
 import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import utils.Utils;
 
-
-public class BookRentalFileFilter extends FileFilter {
+public class FileFilterBookRental extends FileFilter {
 
 	@Override
 	public boolean accept(File f) {
