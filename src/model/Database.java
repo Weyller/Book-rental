@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -121,14 +120,14 @@ public class Database {
 	}
 	
 	public List<Client> getClients(){
-		return Collections.unmodifiableList(clients);
+		return clients;
 	}
 	
 	public List<Book> getBooks(){
-		return Collections.unmodifiableList(books);
+		return books;
 	}
 	
 	public List<Rental> getRentals(){
-		return Collections.unmodifiableList(rentalsHistory);
+		return rentalsHistory;
 	}
 }

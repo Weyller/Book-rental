@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import exc.BookNotFoundException;
 import exc.UnclearedException;
 import model.Book;
 import model.Client;
@@ -42,11 +43,17 @@ public class Controller {
 		db.saveToFile(f);
 	}
 	
-	public void proceedCurrent(){
+	public void proceedRentingCurrents(){
 		if(currentClient != null && currentBook != null){
 			Rental r = new Rental(currentClient, currentBook, new Date());
 			db.addRental(r);
 			currentClient.rentBook(currentBook);
+		}
+	}
+	
+	public void proceedReturningCurrents() throws BookNotFoundException{
+		if(currentClient != null && currentBook != null){
+			currentClient.returnBook(currentBook);
 		}
 	}
 	

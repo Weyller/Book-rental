@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import controller.Controller;
+import exc.BookNotFoundException;
 import exc.UnclearedException;
 import model.Book;
 import model.Client;
@@ -16,6 +17,7 @@ import viewEvents.ClientFormEvent;
 import viewListeners.BookFormListener;
 import viewListeners.BookTableListener;
 import viewListeners.ClientFormListener;
+import viewListeners.ClientRentalsTableListener;
 import viewListeners.ClientTableListener;
 
 public class MainFrame extends JFrame{
@@ -46,7 +48,6 @@ public class MainFrame extends JFrame{
 		clientFormPanel.setClientFormListener(new ClientFormListener(){
 			public void formClientEventOccured(ClientFormEvent e) {
 				controller.addClient(e);
-				System.out.println("Adding client");
 				clientTablePanel.refresh();
 			}
 		});
@@ -63,7 +64,37 @@ public class MainFrame extends JFrame{
 		clientTablePanel.setData(controller.getClients());
 		clientTablePanel.setClientTableListener(new ClientTableListener(){
 			public void showRentedBooks(int clientRow) {
-				//new tabbed with clientBooks list ??
+				ClientRentalsTablePanel clientBooks = new ClientRentalsTablePanel();
+				Client c = controller.getClients().get(clientRow);
+				controller.setCurrentClient(c);
+				if(controller.getCurrentClient().getListOfRentedBooks() == null){
+					System.out.println("Null list. Closing.");
+					return;
+				}
+				clientBooks.setCurrentClientData(String.valueOf(c.getID()), c.getFirstName() + " " + c.getLastName());
+				clientBooks.setClientBooksData(c.getListOfRentedBooks());
+				
+				tablesTabbed.add(String.valueOf("client" + c.getID()), clientBooks);
+				tablesTabbed.setSelectedIndex(tablesTabbed.getTabCount() - 1);
+				
+				clientBooks.setListener(new ClientRentalsTableListener(){
+					public void returnBook(int rowIndex) {
+						try{
+							c.returnBook(c.getListOfRentedBooks().get(rowIndex));
+						}
+						catch(BookNotFoundException e){
+							errorMessage("Book not found.");
+						}
+						clientBooks.refresh();
+						clientTablePanel.refresh();
+						bookTablePanel.refresh();
+					}
+					
+					public void closePanel() {
+						tablesTabbed.remove(tablesTabbed.getSelectedIndex());
+						controller.clearCurrent();
+					}
+				});
 			}
 			
 			public void deleteClient(int clientRow) {
@@ -78,7 +109,7 @@ public class MainFrame extends JFrame{
 			public void confirmRenting(int clientRow) {
 				Client c = controller.getClients().get(clientRow);
 				controller.setCurrentClient(c);
-				controller.proceedCurrent();
+				controller.proceedRentingCurrents();
 				cancelRenting();
 				clientTablePanel.refresh();
 				bookTablePanel.refresh();
@@ -110,9 +141,9 @@ public class MainFrame extends JFrame{
 				}
 				controller.setCurrentBook(b);
 				tablesTabbed.setSelectedIndex(0);
-				instructUser("Choose client and press confirm button.");
 				clientTablePanel.setBookToRentInfo(String.valueOf(b.getID()), b.getTitle(), b.getAuthor());
 				clientTablePanel.setConfirmPanelVisibility(true);
+				instructUser("Choose client and press confirm button.");
 			}
 		});
 		
