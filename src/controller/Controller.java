@@ -76,7 +76,7 @@ public class Controller {
 	public void addBook(BookFormEvent e){
 		String title = e.getTitle();
 		String author = e.getAuthor();
-		Book b = new Book(title, author);
+		Book b = new Book(author, title);
 		db.addBook(b);
 	}
 	

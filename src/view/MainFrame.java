@@ -1,8 +1,10 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -12,6 +14,7 @@ import exc.BookNotFoundException;
 import exc.UnclearedException;
 import model.Book;
 import model.Client;
+import utils.FileFilterBookRental;
 import viewEvents.BookFormEvent;
 import viewEvents.ClientFormEvent;
 import viewListeners.BookFormListener;
@@ -26,6 +29,7 @@ public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private MainMenuBar mainBar;
+	private JFileChooser fileChooser;
 	
 	private JTabbedPane formsTabbed;
 	private JTabbedPane tablesTabbed;
@@ -42,6 +46,7 @@ public class MainFrame extends JFrame{
 		super(title);
 		controller = new Controller();
 		
+		initiateFileChooser();
 		mainBar = new MainMenuBar();
 		mainBar.setMainBarListener(new MainBarListener(){
 			public void exit() {
@@ -54,10 +59,15 @@ public class MainFrame extends JFrame{
 				}
 			}
 			public void loadFromFile() {
-				
+				if(fileChooser.showOpenDialog(mainBar.getParent()) == JFileChooser.APPROVE_OPTION){
+					controller.loadFile(fileChooser.getSelectedFile());
+				}
+				refreshAllTables();
 			}
 			public void saveToFile() {
-		
+				if(fileChooser.showSaveDialog(mainBar.getParent()) == JFileChooser.APPROVE_OPTION){
+					controller.saveToFile(fileChooser.getSelectedFile());
+				}
 			}
 			public void about() {
 				JOptionPane.showMessageDialog(null, controller.getAboutMessage(), "about", JOptionPane.PLAIN_MESSAGE);
@@ -112,8 +122,7 @@ public class MainFrame extends JFrame{
 							errorMessage("Book not found.");
 						}
 						clientBooks.refresh();
-						clientTablePanel.refresh();
-						bookTablePanel.refresh();
+						refreshAllTables();
 					}
 					
 					public void closePanel() {
@@ -137,9 +146,7 @@ public class MainFrame extends JFrame{
 				controller.setCurrentClient(c);
 				controller.proceedRentingCurrents();
 				cancelRenting();
-				clientTablePanel.refresh();
-				bookTablePanel.refresh();
-				rentalsTablePanel.refresh();
+				refreshAllTables();
 			}
 			
 			public void cancelRenting() {
@@ -193,5 +200,17 @@ public class MainFrame extends JFrame{
 	
 	private void instructUser(String message){
 		JOptionPane.showMessageDialog(null, message, "Follow instruction", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void initiateFileChooser(){
+		fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilterBookRental());
+		fileChooser.setCurrentDirectory(new File("./src/savedData"));
+	}
+	
+	private void refreshAllTables(){
+		clientTablePanel.refresh();
+		bookTablePanel.refresh();
+		rentalsTablePanel.refresh();
 	}
 }
