@@ -205,7 +205,7 @@ public class MainFrame extends JFrame{
 	private void initiateFileChooser(){
 		fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilterBookRental());
-		fileChooser.setCurrentDirectory(new File("./src/savedData"));
+		fileChooser.setCurrentDirectory(new File("./resource/savedData"));
 	}
 	
 	private void refreshAllTables(){
